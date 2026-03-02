@@ -7,7 +7,7 @@ variable "azure_location" {
 variable "app_name" {
   description = "the base name for the application and related resources."
   type        = string
-  default     = "ds-axiaai-carriage-services"
+  default     = "ds-axiaai-zeta-voice"
 }
 
 variable "image_tag" {
@@ -77,13 +77,13 @@ variable "db_sku" {
 variable "db_name" {
   description = "name for the postgresql database."
   type        = string
-  default     = "carriage"
+  default     = "zetavoice"
 }
 
 variable "db_user" {
   description = "username for the postgresql database."
   type        = string
-  default     = "carriageadmin"
+  default     = "zetavoiceadmin"
 }
 
 variable "subscription_id" {

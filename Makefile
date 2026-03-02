@@ -27,6 +27,12 @@ run: .venv/bin/activate
 admin: .venv/bin/activate
 	uv run admin
 
+tmux-start: .venv/bin/activate
+	bash deploy/tmux-start.sh
+
+tmux-stop:
+	bash deploy/tmux-stop.sh
+
 lint: .venv/bin/activate
 	uv run pre-commit run --all-files
 	uv run ./check_licenses.sh
@@ -46,8 +52,8 @@ clean:
 	rm -rf build/
 	rm -rf dist/
 	rm -rf *.egg-info/
-	rm -f data/carriage.db
-	rm -f carriage.db
+	rm -f data/zeta_voice.db
+	rm -f zeta_voice.db
 	rm -f output_*.json
 	rm -rf .promptfoo
 	rm -rf node_modules

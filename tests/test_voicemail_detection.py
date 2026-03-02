@@ -3,12 +3,12 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from carriage_services.voicemail_detection.voicemail_detection import VoicemailDetector
+from zeta_voice.voicemail_detection.voicemail_detection import VoicemailDetector
 
 
 @pytest.fixture()
 def mock_settings():
-    with patch("carriage_services.voicemail_detection.voicemail_detection.settings") as mock:
+    with patch("zeta_voice.voicemail_detection.voicemail_detection.settings") as mock:
         settings_instance = Mock()
         settings_instance.voicemail_detection.VOICEMAIL_DETECTION_MODEL = "gpt-4o-mini"
         mock.return_value = settings_instance
@@ -17,7 +17,7 @@ def mock_settings():
 
 @pytest.fixture()
 def mock_paths():
-    with patch("carriage_services.voicemail_detection.voicemail_detection.paths") as mock_paths:
+    with patch("zeta_voice.voicemail_detection.voicemail_detection.paths") as mock_paths:
         with tempfile.NamedTemporaryFile(suffix=".j2", delete=False) as f:
             mock_paths.VOICEMAIL_DETECTION_PROMPT_PATH = f.name
         yield mock_paths
@@ -38,8 +38,8 @@ def sample_prompt_template():
         yield f.name
 
 
-@patch("carriage_services.voicemail_detection.voicemail_detection.paths")
-@patch("carriage_services.voicemail_detection.voicemail_detection.acompletion")
+@patch("zeta_voice.voicemail_detection.voicemail_detection.paths")
+@patch("zeta_voice.voicemail_detection.voicemail_detection.acompletion")
 @pytest.mark.asyncio()
 async def test_detect_voicemail(
     mock_acompletion: Mock,
@@ -64,8 +64,8 @@ async def test_detect_voicemail(
     mock_acompletion.assert_called_once()
 
 
-@patch("carriage_services.voicemail_detection.voicemail_detection.paths")
-@patch("carriage_services.voicemail_detection.voicemail_detection.acompletion")
+@patch("zeta_voice.voicemail_detection.voicemail_detection.paths")
+@patch("zeta_voice.voicemail_detection.voicemail_detection.acompletion")
 @pytest.mark.asyncio()
 async def test_detect_voicemail_not_voicemail(
     mock_acompletion: Mock,

@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from carriage_services.conversation.flows import BookingFlow
-from carriage_services.utils.enums import LeadStatus
+from zeta_voice.conversation.flows import BookingFlow
+from zeta_voice.utils.enums import LeadStatus
 
 
 def test_booking_flow_lead_status_date_selected() -> None:

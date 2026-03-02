@@ -6,7 +6,7 @@ import click
 import pandas as pd
 from tqdm import tqdm
 
-from carriage_services.tts.tts import TTSService, create_tts_service
+from zeta_voice.tts.tts import TTSService, create_tts_service
 
 
 async def process_responses_async(

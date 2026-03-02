@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from carriage_services.voicemail_detection.voicemail_detection import (
+from zeta_voice.voicemail_detection.voicemail_detection import (
     VoicemailDetectionResult,
     VoicemailDetector,
 )
@@ -15,7 +15,7 @@ from carriage_services.voicemail_detection.voicemail_detection import (
 @pytest.fixture()
 def mock_settings_rule_based() -> Generator[MagicMock, None, None]:
     """Mock settings to use rule-based detector."""
-    with patch("carriage_services.voicemail_detection.voicemail_detection.settings") as mock:
+    with patch("zeta_voice.voicemail_detection.voicemail_detection.settings") as mock:
         mock.voicemail_detection.VOICEMAIL_DETECTOR_TYPE = "rule_based"
         yield mock
 

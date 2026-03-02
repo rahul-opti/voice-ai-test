@@ -73,7 +73,7 @@ report.xml
 
 cmake-build-*/
 calls.db
-carriage.db
+zeta_voice.db
 
 .terraform
 .terraform.tfstate.lock.info
@@ -94,7 +94,7 @@ tf/terraform.tvars
 
 *.DS_STORE
 
-src/carriage_services/question_classification/model/
+src/zeta_voice/question_classification/model/
 .env.prod
 
 /node_modules

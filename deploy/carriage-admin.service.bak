@@ -1,0 +1,28 @@
+[Unit]
+Description=Carriage Services - Admin App
+After=network.target carriage-app.service
+Wants=carriage-app.service
+
+[Service]
+Type=simple
+User=carriage
+Group=carriage
+WorkingDirectory=/opt/carriage-services
+EnvironmentFile=/opt/carriage-services/.env
+ExecStart=/opt/carriage-services/.venv/bin/uvicorn carriage_services.main:admin_app \
+    --host 0.0.0.0 \
+    --port 8001 \
+    --workers 1 \
+    --log-level info
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=carriage-admin
+
+# Hardening
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

@@ -1,7 +1,7 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: carriage-postgres
+    container_name: zeta-postgres
     restart: unless-stopped
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -14,23 +14,32 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-  azurite:
-    image: mcr.microsoft.com/azure-storage/azurite:latest
-    container_name: carriage-azurite
+
+  localstack:
+    image: localstack/localstack:latest
+    container_name: zeta-localstack
     restart: unless-stopped
     ports:
-      - "10000:10000"
-      - "10001:10001"
-      - "10002:10002"
+      - "4566:4566"
+    environment:
+      - SERVICES=s3
+      - DEFAULT_REGION=${AWS_REGION:-us-east-1}
+      - AWS_DEFAULT_REGION=${AWS_REGION:-us-east-1}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-test}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-test}
     volumes:
-      - azurite_data:/data
-    command: azurite --blobHost 0.0.0.0 --queueHost 0.0.0.0 --tableHost 0.0.0.0 --skipApiVersionCheck
+      - localstack_data:/var/lib/localstack
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4566/_localstack/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   app:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: carriage-app
+    container_name: zeta-app
     restart: unless-stopped
     env_file:
       - .env
@@ -39,19 +48,19 @@ services:
     volumes:
       - ./src:/app/src
       - ./config:/app/config
-      - model_cache:/app/src/carriage_services/question_classification/model
+      - model_cache:/app/src/zeta_voice/question_classification/model
     depends_on:
       postgres:
         condition: service_healthy
-      azurite:
-        condition: service_started
-    command: uvicorn carriage_services.main:app --host 0.0.0.0 --port 8000
+      localstack:
+        condition: service_healthy
+    command: uvicorn zeta_voice.main:app --host 0.0.0.0 --port 8000
 
   admin:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: carriage-admin
+    container_name: zeta-admin
     restart: unless-stopped
     env_file:
       - .env
@@ -62,9 +71,9 @@ services:
         condition: service_started
       postgres:
         condition: service_healthy
-    command: uvicorn carriage_services.main:admin_app --host 0.0.0.0 --port 8001
+    command: uvicorn zeta_voice.main:admin_app --host 0.0.0.0 --port 8001
 
 volumes:
   postgres_data:
-  azurite_data:
+  localstack_data:
   model_cache:

@@ -22,11 +22,11 @@ RUN python -m spacy download en_core_web_lg
 RUN python -c "\
 from transformers import AutoModelForSequenceClassification, AutoTokenizer; \
 MODEL_ID = 'shahrukhx01/question-vs-statement-classifier'; \
-MODEL_DIR = '/app/src/carriage_services/question_classification/model'; \
+MODEL_DIR = '/app/src/zeta_voice/question_classification/model'; \
 print(f'Downloading model {MODEL_ID} to {MODEL_DIR}...'); \
 _ = AutoTokenizer.from_pretrained(MODEL_ID, cache_dir=MODEL_DIR); \
 _ = AutoModelForSequenceClassification.from_pretrained(MODEL_ID, cache_dir=MODEL_DIR)"
 
 EXPOSE 8000
 
-CMD ["uvicorn", "carriage_services.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "zeta_voice.main:app", "--host", "0.0.0.0", "--port", "8000"]

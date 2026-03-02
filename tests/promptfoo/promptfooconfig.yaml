@@ -1,4 +1,4 @@
-description: Unified and orthogonal test suite for carriage-services conversation flows
+description: Unified and orthogonal test suite for zeta-voice conversation flows
 providers:
   - id: 'file://harness/promptfoo_test_harness.py'
 

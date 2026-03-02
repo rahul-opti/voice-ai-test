@@ -7,10 +7,10 @@ import click
 from fastapi import BackgroundTasks
 from loguru import logger
 
-from carriage_services.conversation.runner import OutputType, Runner, StartCallRequest
-from carriage_services.database import create_tables, get_db
-from carriage_services.interface.terminal import TerminalClient
-from carriage_services.settings import ConversationSettings
+from zeta_voice.conversation.runner import OutputType, Runner, StartCallRequest
+from zeta_voice.database import create_tables, get_db
+from zeta_voice.interface.terminal import TerminalClient
+from zeta_voice.settings import ConversationSettings
 
 os.environ["ENABLE_PROFILING"] = "true"
 

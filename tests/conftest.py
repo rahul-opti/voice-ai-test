@@ -14,11 +14,11 @@ from loguru import logger
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 
-from carriage_services.calendar.models import BookingResult
-from carriage_services.calendar.provider import CalendarProvider
-from carriage_services.conversation import calendar_api
-from carriage_services.database.models import Base
-from carriage_services.paths import (
+from zeta_voice.calendar.models import BookingResult
+from zeta_voice.calendar.provider import CalendarProvider
+from zeta_voice.conversation import calendar_api
+from zeta_voice.database.models import Base
+from zeta_voice.paths import (
     INTENT_CLASSIFICATION_FAQS_PATH,
     INTENT_CLASSIFICATION_OBJECTIONS_PATH,
     SLOTS_WITH_RESPONSES_PATH,

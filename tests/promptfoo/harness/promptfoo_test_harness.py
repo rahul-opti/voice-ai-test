@@ -6,10 +6,10 @@ from loguru import logger
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from carriage_services.conversation.runner import Runner, StartCallRequest
-from carriage_services.database import get_db
-from carriage_services.database.models import Base
-from carriage_services.settings import ConversationSettings, settings
+from zeta_voice.conversation.runner import Runner, StartCallRequest
+from zeta_voice.database import get_db
+from zeta_voice.database.models import Base
+from zeta_voice.settings import ConversationSettings, settings
 
 # --- Test Setup ---
 CONFIG = ConversationSettings()
@@ -41,7 +41,7 @@ async def simulate_conversation(turns: list[dict]) -> list[str]:
     Simulates a full conversation by instantiating the Runner and processing turns.
     """
     # Patch the anonymizer for the entire simulation to avoid loading spaCy.
-    with patch("carriage_services.conversation.memory.anonymize_text", new=mock_anonymize_text):
+    with patch("zeta_voice.conversation.memory.anonymize_text", new=mock_anonymize_text):
         # Use an in-memory SQLite database for test isolation.
         test_engine = create_engine("sqlite+pysqlite:///:memory:", connect_args={"check_same_thread": False})
         TestSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
@@ -53,7 +53,7 @@ async def simulate_conversation(turns: list[dict]) -> list[str]:
         background_tasks = BackgroundTasks()
 
         # Patch the DB session provider to use our in-memory DB.
-        with patch("carriage_services.database.session.SessionLocal", new=TestSessionLocal):
+        with patch("zeta_voice.database.session.SessionLocal", new=TestSessionLocal):
             db_session = next(get_db())
 
             await runner.initialize_conversation(

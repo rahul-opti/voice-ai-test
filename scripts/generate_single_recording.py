@@ -5,18 +5,18 @@ from pathlib import Path
 
 import click
 
-from carriage_services.audio.silence_remover import SilenceRemover
-from carriage_services.settings import (
+from zeta_voice.audio.silence_remover import SilenceRemover
+from zeta_voice.settings import (
     ElevenLabsTTSSettings,
     settings,
 )
-from carriage_services.tts.elevenlabs_tts import (
+from zeta_voice.tts.elevenlabs_tts import (
     async_generate_speech as elevenlabs_async_generate_speech,
 )
-from carriage_services.tts.openai_tts import (
+from zeta_voice.tts.openai_tts import (
     async_generate_speech as openai_async_generate_speech,
 )
-from carriage_services.tts.tts import get_available_voice_names, get_voice_config
+from zeta_voice.tts.tts import get_available_voice_names, get_voice_config
 
 
 async def _generate_audio_bytes(text: str, voice_id: str, voice_name: str) -> bytes:

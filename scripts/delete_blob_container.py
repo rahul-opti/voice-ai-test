@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Simple script for deleting blob containers using AzureBlobStorage."""
+"""Simple script for deleting S3 buckets using S3Storage."""
 
 import typer
 
-from carriage_services.utils.recordings_storage import AzureBlobStorage
+from zeta_voice.utils.recordings_storage import S3Storage
 
 
 def main(
@@ -22,7 +22,7 @@ def main(
             raise typer.Exit()
 
     try:
-        storage = AzureBlobStorage()
+        storage = S3Storage()
         success = storage.delete_container(container_name)
 
         if success:

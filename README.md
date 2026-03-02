@@ -1,4 +1,4 @@
-# Carriage Services - Telephony Chatbot
+# Zeta Voice - Telephony Chatbot
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE.md)
 [![Python](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/)
@@ -114,7 +114,7 @@ To enable appointment booking with Microsoft Dynamics 365, the application requi
 
 1.  Navigate to **Azure Active Directory** in the Azure Portal.
 2.  Go to **App registrations** and click **+ New registration**.
-3.  Give it a descriptive name (e.g., `CarriageServicesVoiceAI`).
+3.  Give it a descriptive name (e.g., `ZetaVoiceAI`).
 4.  Select "Accounts in this organizational directory only".
 5.  Click **Register**.
 6.  From the **Overview** page, copy the **Application (client) ID** and **Directory (tenant) ID**. These are your `DYNAMICS_CLIENT_ID` and `DYNAMICS_TENANT_ID`.
@@ -248,7 +248,7 @@ The project is configured for autonomous deployment to Azure via GitLab CI/CD wh
 ### GitLab CI/CD Prerequisites
 
 1. **GitLab Runner**: A GitLab runner with the tag `all-ds` must be available and configured for the project.
-2. **Custom Docker Image**: The CI/CD pipeline relies on a custom Docker image (`registry.gitlab.com/deepsense.ai/g-axia-ai/carriage-services/terraformazuredocker:0.0.1`) that contains both the Azure CLI and Terraform CLI. This image must be built and pushed to a registry accessible by the GitLab runner. The `docker/Dockerfile.terraform` file is provided for this purpose.
+2. **Custom Docker Image**: The CI/CD pipeline relies on a custom Docker image (`registry.gitlab.com/deepsense.ai/g-axia-ai/zeta-voice/terraformazuredocker:0.0.1`) that contains both the Azure CLI and Terraform CLI. This image must be built and pushed to a registry accessible by the GitLab runner. The `docker/Dockerfile.terraform` file is provided for this purpose.
 
     **Building the `terraformazuredocker` Image:**
 
@@ -353,7 +353,7 @@ Use this URL to update the `BASE_URL` in your `.env` file (or directly in Key Va
 The application is designed to work with both **PostgreSQL** and **SQLite**.
 
 - **PostgreSQL:** When deployed with Terraform, a PostgreSQL Flexible Server is provisioned. The application will automatically connect to it using the `DB_PATH` environment variable set from Key Vault (`DB_CONNECTION_STRING`).
-- **SQLite:** For local development without Docker Compose, you can configure `DB_PATH` in your `.env` file to point to a local SQLite file (e.g., `data/carriage.db`). The application will detect the `sqlite+pysqlite:///` prefix and use the SQLite driver.
+- **SQLite:** For local development without Docker Compose, you can configure `DB_PATH` in your `.env` file to point to a local SQLite file (e.g., `data/zeta_voice.db`). The application will detect the `sqlite+pysqlite:///` prefix and use the SQLite driver.
 
 ## Usage
 
@@ -560,7 +560,7 @@ on a different port to keep it isolated from the main telephony webhooks and req
 To start the admin server, run the following command from the project root after activating the virtual environment:
 
 ```bash
-uvicorn carriage_services.main:admin_app --host 127.0.0.1 --port 8001
+uvicorn zeta_voice.main:admin_app --host 127.0.0.1 --port 8001
 ```
 
 Or using the make command:

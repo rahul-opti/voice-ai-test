@@ -3,7 +3,7 @@ import sys
 import click
 from loguru import logger
 
-from carriage_services.utils.twilio_downloader import TwilioRecordingDownloader
+from zeta_voice.utils.twilio_downloader import TwilioRecordingDownloader
 
 
 @click.command()

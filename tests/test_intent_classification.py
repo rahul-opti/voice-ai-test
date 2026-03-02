@@ -4,9 +4,9 @@ from unittest.mock import Mock, patch
 import pandas as pd
 import pytest
 
-from carriage_services.conversation.context import UnderstandingContext
-from carriage_services.conversation.models import Action
-from carriage_services.intent_classification.intent_classification import (
+from zeta_voice.conversation.context import UnderstandingContext
+from zeta_voice.conversation.models import Action
+from zeta_voice.intent_classification.intent_classification import (
     IntentClassification,
 )
 
@@ -14,7 +14,7 @@ from carriage_services.intent_classification.intent_classification import (
 @pytest.fixture()
 def mock_settings():
     """Mock settings for testing."""
-    with patch("carriage_services.intent_classification.intent_classification.settings") as mock:
+    with patch("zeta_voice.intent_classification.intent_classification.settings") as mock:
         mock.intent_classification.INTENT_CLASSIFICATION_MODEL = "gpt-4o-mini"
         mock.intent_classification.QUESTION_CLASSIFICATION_MODEL = "gpt-4o-mini"
         mock.intent_classification.OBJECTION_CLASSIFICATION_MODEL = "gpt-4o-mini"
@@ -27,7 +27,7 @@ def mock_settings():
 @pytest.fixture()
 def mock_paths():
     """Mock paths for testing."""
-    with patch("carriage_services.intent_classification.intent_classification.paths") as mock_paths:
+    with patch("zeta_voice.intent_classification.intent_classification.paths") as mock_paths:
         with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as f:
             mock_paths.INTENT_CLASSIFICATION_FAQS_PATH = f.name
         with tempfile.NamedTemporaryFile(suffix=".csv", delete=False) as f:
@@ -159,8 +159,8 @@ class TestIntentClassification:
         assert intents[1].name == "Are you a real person?"
         assert intents[1].examples == ["Are you a real person?", "Are you a human?"]
 
-    @patch("carriage_services.intent_classification.intent_classification.completion")
-    @patch("carriage_services.conversation.flows.Flow.get_global_slots")
+    @patch("zeta_voice.intent_classification.intent_classification.completion")
+    @patch("zeta_voice.conversation.flows.Flow.get_global_slots")
     def test_classify_intent_success(  # noqa: PLR6301
         self,
         mock_get_global_slots: Mock,
@@ -201,7 +201,7 @@ class TestIntentClassification:
         assert result.action.action_type == "set_slot"
         mock_completion.assert_called_once()
 
-    @patch("carriage_services.intent_classification.intent_classification.completion")
+    @patch("zeta_voice.intent_classification.intent_classification.completion")
     def test_classify_question_success(  # noqa: PLR6301
         self,
         mock_completion: Mock,
@@ -228,7 +228,7 @@ class TestIntentClassification:
         assert result.utterance_content == "I understand."
         mock_completion.assert_called_once()
 
-    @patch("carriage_services.intent_classification.intent_classification.completion")
+    @patch("zeta_voice.intent_classification.intent_classification.completion")
     def test_classify_objection_success(  # noqa: PLR6301
         self,
         mock_completion: Mock,

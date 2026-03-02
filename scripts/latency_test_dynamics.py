@@ -35,8 +35,8 @@ from loguru import logger
 # Add the project root to the Python path to allow imports from the main application
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 
-from carriage_services.calendar.provider import DynamicsCalendarProvider
-from carriage_services.settings import settings
+from zeta_voice.calendar.provider import DynamicsCalendarProvider
+from zeta_voice.settings import settings
 
 
 class DynamicsLatencyTester:

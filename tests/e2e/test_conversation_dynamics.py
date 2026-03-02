@@ -6,8 +6,8 @@ from fastapi import BackgroundTasks
 from loguru import logger
 from sqlalchemy.orm import Session
 
-from carriage_services.conversation.runner import Runner, StartCallRequest
-from carriage_services.settings import ConversationSettings, settings
+from zeta_voice.conversation.runner import Runner, StartCallRequest
+from zeta_voice.settings import ConversationSettings, settings
 
 
 @pytest.fixture(autouse=True)

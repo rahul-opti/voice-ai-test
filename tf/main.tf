@@ -269,7 +269,7 @@ resource "azurerm_container_app" "admin" {
       image   = "${azurerm_container_registry.main.login_server}/${var.resource_group_name}:${var.image_tag}"
       cpu     = 2
       memory  = "4Gi"
-      command = ["uvicorn", "carriage_services.main:admin_app", "--host", "0.0.0.0", "--port", "8001"]
+      command = ["uvicorn", "zeta_voice.main:admin_app", "--host", "0.0.0.0", "--port", "8001"]
 
       env {
         name  = "AZURE_STORAGE_CONNECTION_STRING"

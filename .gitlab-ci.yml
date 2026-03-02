@@ -55,7 +55,7 @@ stages:
 # --- Reusable Job Templates ---
 .terraform_job_template:
   image:
-    name: registry.gitlab.com/deepsense.ai/g-axia-ai/carriage-services/terraformazuredocker:0.0.1
+    name: registry.gitlab.com/deepsense.ai/g-axia-ai/zeta_voice/terraformazuredocker:0.0.1
     entrypoint: [""]
   before_script:
     - az login --service-principal -u "$ARM_CLIENT_ID" -p "$ARM_CLIENT_SECRET" --tenant "$ARM_TENANT_ID"
@@ -162,7 +162,7 @@ provision_acr:
 build_image:
   stage: build
   image:
-    name: registry.gitlab.com/deepsense.ai/g-axia-ai/carriage-services/terraformazuredocker:0.0.1
+    name: registry.gitlab.com/deepsense.ai/g-axia-ai/zeta_voice/terraformazuredocker:0.0.1
     entrypoint: [""]
   services:
     - docker:dind

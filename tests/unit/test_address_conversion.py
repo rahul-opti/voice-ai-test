@@ -1,6 +1,6 @@
 """Test the address number conversion functionality."""
 
-from carriage_services.utils.helpers import convert_numbers_to_string_digits
+from zeta_voice.utils.helpers import convert_numbers_to_string_digits
 
 
 def test_converts_address_numbers() -> None:

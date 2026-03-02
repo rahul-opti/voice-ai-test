@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Simple script for creating blob containers using AzureBlobStorage."""
+"""Simple script for creating S3 buckets using S3Storage."""
 
 import typer
 
-from carriage_services.utils.recordings_storage import AzureBlobStorage
+from zeta_voice.utils.recordings_storage import S3Storage
 
 
 def main(
@@ -19,7 +19,7 @@ def main(
         set_public_access: Whether to set public access level to 'blob'
     """
     try:
-        storage = AzureBlobStorage()
+        storage = S3Storage()
         success = storage.create_container(container_name, public_access=set_public_access)
 
         if success:

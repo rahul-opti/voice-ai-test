@@ -5,7 +5,7 @@ from dataclasses import dataclass
 import click
 from loguru import logger
 
-from carriage_services.tts.tts import get_available_voice_names
+from zeta_voice.tts.tts import get_available_voice_names
 
 
 @dataclass

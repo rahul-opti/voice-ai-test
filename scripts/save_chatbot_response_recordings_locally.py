@@ -7,18 +7,18 @@ import click
 import pandas as pd
 from tqdm import tqdm
 
-from carriage_services.audio.silence_remover import SilenceRemover
-from carriage_services.settings import (
+from zeta_voice.audio.silence_remover import SilenceRemover
+from zeta_voice.settings import (
     ElevenLabsTTSSettings,
     settings,
 )
-from carriage_services.tts.elevenlabs_tts import (
+from zeta_voice.tts.elevenlabs_tts import (
     async_generate_speech as elevenlabs_async_generate_speech,
 )
-from carriage_services.tts.openai_tts import (
+from zeta_voice.tts.openai_tts import (
     async_generate_speech as openai_async_generate_speech,
 )
-from carriage_services.tts.tts import get_available_voice_names, get_voice_config
+from zeta_voice.tts.tts import get_available_voice_names, get_voice_config
 
 
 def _get_container_name() -> str:

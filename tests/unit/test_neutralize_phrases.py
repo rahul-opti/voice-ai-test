@@ -13,11 +13,11 @@ from jinja2 import Environment, FileSystemLoader
 from litellm import completion
 from tqdm import tqdm
 
-from carriage_services.conversation.flows import BookingFlow
-from carriage_services.conversation.models import BookingFlowMessage
-from carriage_services.paths import BOOKING_FLOW_PROMPT_PATH
-from carriage_services.settings import BookingFlowSettings
-from carriage_services.utils.enums import BookingFlowPersona
+from zeta_voice.conversation.flows import BookingFlow
+from zeta_voice.conversation.models import BookingFlowMessage
+from zeta_voice.paths import BOOKING_FLOW_PROMPT_PATH
+from zeta_voice.settings import BookingFlowSettings
+from zeta_voice.utils.enums import BookingFlowPersona
 
 
 class TestNeutralizePhrases:
@@ -113,7 +113,7 @@ class TestNeutralizePhrases:
         conversation_history = [
             {
                 "role": "bot",
-                "content": "Hello. This is Ava from Carriage Services. \
+                "content": "Hello. This is Ava from Zeta Voice. \
             The reason for my call is you had previously signed up to discuss our preplanning services with our team. \
             Am I speaking to John Smith?",
                 "intro_content": "",
