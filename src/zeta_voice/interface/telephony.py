@@ -63,7 +63,7 @@ class TwilioClient(Interface):
             from_=caller_number,
             url=webhook_url,
             status_callback=status_callback_url,
-            status_callback_event=["completed", "busy", "failed", "no-answer", "canceled"],
+            status_callback_event=["initiated", "ringing", "answered", "completed"],
             record=record,
         )
 
