@@ -96,11 +96,26 @@ async def start_call(
         ),
     ] = None,
     record_call: bool = True,
-    voice_name: VoiceName = VoiceName.MARIA,  # type: ignore[valid-type]
+    voice_name: VoiceName | None = None,  # type: ignore[valid-type]
 ) -> dict[str, Any]:
     """
     API endpoint to initiate an outbound call by creating a conversation and delegating to the MemoryService.
     """
+    
+    # Resolve the voice name to use
+    if voice_name:
+        selected_voice = voice_name.value
+    elif hasattr(settings.tts, "DEFAULT_VOICE_NAME") and settings.tts.DEFAULT_VOICE_NAME:
+        # Check if the env var matches an available voice
+        try:
+            selected_voice = VoiceName[settings.tts.DEFAULT_VOICE_NAME.upper()].value
+        except KeyError:
+            logger.warning(f"DEFAULT_VOICE_NAME '{settings.tts.DEFAULT_VOICE_NAME}' not found in available voices. Falling back to first available.")
+            selected_voice = list(VoiceName)[0].value
+    else:
+        selected_voice = list(VoiceName)[0].value
+        
+        
     # Extract the phone number string from the enum value
     selected_from_number = from_number.value if from_number else None  # type: ignore[union-attr]
     call_instance = client.create(
@@ -110,7 +125,7 @@ async def start_call(
     )
     call_sid = call_instance.sid
 
-    runner = get_or_create_runner(call_sid, voice_name.value)
+    runner = get_or_create_runner(call_sid, selected_voice)
     await runner.initialize_conversation(payload, db, background_tasks, OutputType.URL)
     return {"call_sid": call_sid}
 

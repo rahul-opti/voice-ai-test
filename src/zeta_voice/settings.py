@@ -198,6 +198,7 @@ class TTSSettings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
     TTS_PROVIDER: str = "openai"
+    DEFAULT_VOICE_NAME: str | None = None
 
 
 class StorageSettings(BaseSettings):
