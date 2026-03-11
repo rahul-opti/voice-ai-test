@@ -95,7 +95,7 @@ Your task is to analyze the current conversation context and generate an action 
 - **CRITICAL: Objections vs Questions**: If a user's message expresses reluctance, avoidance, or a desire to disengage — even if phrased as a request or question (e.g., "could you just send me some information? I don't have time right now", "can you email me instead? I'm busy") — treat it as an **objection/rebuttal**, NOT a question. Do NOT use `start_flow(question_flow)`. Instead, treat it as a **negative response** to accepting booking. The underlying intent is the objection (lack of time, lack of interest, etc.), and the request for information is just a polite dismissal.
 - **Conservative approach**: When in doubt, use ContinueAction or do nothing
 - **One slot at a time**: Only set one slot per action (except in booking flow)
-- **Date format**: Use 2025-MM-DD hh:mm format for dates
+- **Date format**: Use 2026-MM-DD hh:mm format for dates
 - **No placeholders**: Never use abstract values or placeholders for slots
 - **User information only**: Only use information explicitly provided by the user
 - **Never modify active set slots**: Only set active slots that have current value of None. If an active slot already has a value (True/False), do NOT change it

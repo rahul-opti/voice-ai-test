@@ -440,3 +440,7 @@ sudo ss -tlpn | grep -E '8000|8001|80|443'
 cd /home/ubuntu/app/zeta-voice
 source .env && .venv/bin/python -m uvicorn zeta_voice.main:app --host 0.0.0.0 --port 8000 --workers 1 --log-level info
 ```
+
+# Run locally
+source .venv/bin/activate
+source .env && uvicorn zeta_voice.main:app --host 0.0.0.0 --port 8000 --workers 1 --log-level info
