@@ -23,11 +23,11 @@ async def extract_leads(file: UploadFile = File(...)) -> dict[str, Any]:
         Extract any names and phone numbers you can find in the image.
         Return the result EXACTLY as a JSON array of objects, where each object has "name" and "phone" keys. 
         If a name is not found but a phone number is, leave "name" as an empty string.
-        Ensure the phone number is formatted nicely containing the country code if obvious, else just the digits.
+        Ensure the phone number is ALWAYS formatted exactly as a standard US phone number like "+12345678901". Do not use spaces or dashes. If it is only 10 digits, prepend +1.
         Example Output:
         [
-            {"name": "John Doe", "phone": "+1234567890"},
-            {"name": "Alice Smith", "phone": "987-654-3210"}
+            {"name": "John Doe", "phone": "+12345678901"},
+            {"name": "Alice Smith", "phone": "+19876543210"}
         ]
         If no leads are found, return an empty array [].
         ONLY return valid JSON. Do not include markdown blocks or any other text.
