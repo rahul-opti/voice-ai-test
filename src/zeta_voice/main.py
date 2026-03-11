@@ -53,7 +53,7 @@ templates = Jinja2Templates(directory=str(templates_dir))
 
 @app.get("/lead-call", include_in_schema=False, response_class=HTMLResponse)
 async def lead_call_ui(request: Request):
-    voices = [v.name for v in VoiceName]
+    voices = [v.value for v in VoiceName]
     user_api_key = settings.auth.USER_API_KEY.get_secret_value() if hasattr(settings.auth.USER_API_KEY, 'get_secret_value') else settings.auth.USER_API_KEY
     
     handoff_number = ""
