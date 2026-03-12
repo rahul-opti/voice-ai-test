@@ -6,13 +6,16 @@ from typing import cast
 import click
 import uvicorn
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Request
 from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 
 from zeta_voice.auth import admin_api_key_auth
 from zeta_voice.database import create_tables, display_schema
 from zeta_voice.routes.admin_router import admin_router
 from zeta_voice.routes.app_router import router as app_router
+from zeta_voice.routes.lead_extraction import router as lead_extraction_router
 from zeta_voice.settings import settings
 
 load_dotenv()
@@ -38,8 +41,16 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     print("Application shutting down.")
 
 
-app = FastAPI(title="Zeta Voice - Twilio Voice Agent", lifespan=lifespan)
+app = FastAPI(title="Zeta Voice - Twilio Voice Agent", lifespan=lifespan, docs_url=None)
 app.include_router(app_router)
+app.include_router(lead_extraction_router)
+
+templates_dir = Path(__file__).parent / "templates"
+templates = Jinja2Templates(directory=str(templates_dir))
+
+@app.get("/docs", include_in_schema=False, response_class=HTMLResponse)
+async def custom_docs(request: Request):
+    return templates.TemplateResponse("docs.html", {"request": request, "title": app.title, "openapi_url": app.openapi_url})
 
 admin_app = FastAPI(title="Zeta Voice - Admin", dependencies=[Depends(admin_api_key_auth)])
 admin_app.include_router(admin_router)
