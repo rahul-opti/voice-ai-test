@@ -61,23 +61,35 @@ class BookingStatus(Enum):
 
 def mock_calendar_api_get_initial_date_slot() -> datetime:
     """Mock calendar API to get an initial available date slot."""
-    return datetime(2025, 1, 15, 14, 0)
+    available = mock_calendar_api_get_available_dates()
+    return available[0] if available else datetime.now() + timedelta(days=1)
 
 
 def mock_calendar_api_get_available_dates() -> list[datetime]:
-    """Get available dates from calendar API."""
-    return [
-        datetime(2025, 1, 15, 14, 0),
-        datetime(2025, 1, 16, 10, 0),
-        datetime(2025, 1, 17, 10, 0),
-        datetime(2025, 1, 17, 11, 0),
-        datetime(2025, 1, 17, 15, 0),
-        datetime(2025, 1, 18, 16, 0),
-        datetime(2025, 1, 21, 9, 0),
-        datetime(2025, 1, 22, 13, 0),
-        datetime(2025, 1, 23, 11, 0),
-        datetime(2025, 1, 23, 16, 0),
-    ]
+    """Get dynamic available dates from mock calendar API (next 15 days, multiple slots)."""
+    available_dates = []
+    current = datetime.now()
+    
+    # Start from tomorrow
+    start_day = current.date() + timedelta(days=1)
+    
+    # Times of day: 10:00 AM, 1:00 PM (13:00), 3:30 PM (15:30)
+    slots_config = [(10, 0), (13, 0), (15, 30)]
+    
+    days_checked = 0
+    while len(available_dates) < 30 and days_checked < 15:
+        target_date = start_day + timedelta(days=days_checked)
+        days_checked += 1
+        
+        # Skip weekends (ISO weekday: 1=Mon, 7=Sun)
+        if target_date.isoweekday() > 5:
+            continue
+            
+        for hour, minute in slots_config:
+            dt = datetime.combine(target_date, datetime.min.time().replace(hour=hour, minute=minute))
+            available_dates.append(dt)
+            
+    return available_dates
 
 
 def mock_send_to_booking_api(selected_datetime: datetime) -> None:
