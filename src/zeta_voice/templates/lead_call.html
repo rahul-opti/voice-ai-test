@@ -244,6 +244,27 @@
             </tbody>
         </table>
 
+        <div id="costSummaryContainer"
+            style="display: none; margin-top: 25px; padding: 15px; background: #f0f7ff; border: 1px solid #cce3ff; border-radius: 6px;">
+            <h3 style="margin-top: 0; color: #004085; font-size: 18px;">AI Cost Analysis</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div>
+                    <strong>Usage Metrics:</strong><br>
+                    <span id="tokenUsage" style="font-size: 14px; color: #444;"></span>
+                </div>
+                <div>
+                    <strong>Current Request Cost:</strong><br>
+                    <span id="requestCost" style="font-size: 20px; color: #28a745; font-weight: bold;"></span>
+                </div>
+                <div>
+                    <strong>Estimated (100 Requests):</strong><br>
+                    <span id="batchCost" style="font-size: 20px; color: #17a2b8; font-weight: bold;"></span>
+                </div>
+            </div>
+            <p style="margin-top: 10px; font-size: 12px; color: #666; margin-bottom: 0;">*Based on GPT-4o March 2026
+                pricing: $2.50/1M input, $1.25/1M cached, $10.00/1M output tokens.</p>
+        </div>
+
         <div id="payloadDisplayContainer">
             <h3>Payload Sent to /start_call</h3>
             <pre id="payloadDisplay"></pre>
@@ -254,11 +275,11 @@
 
     <script>
         async function extractLeads() {
-            const fileInput = document.getElementById('leadImage');
             const statusEl = document.getElementById('status');
             const table = document.getElementById('leadsTable');
             const tbody = document.getElementById('leadsBody');
             const payloadContainer = document.getElementById('payloadDisplayContainer');
+            const costContainer = document.getElementById('costSummaryContainer');
 
             if (!fileInput.files.length) {
                 alert('Please select an image first.');
@@ -273,6 +294,7 @@
             statusEl.innerText = 'Extracting leads using AI...';
             table.style.display = 'none';
             payloadContainer.style.display = 'none';
+            costContainer.style.display = 'none';
             tbody.innerHTML = '';
 
             try {
@@ -286,6 +308,29 @@
                 }
 
                 const data = await response.json();
+
+                // Process Cost
+                if (data.usage) {
+                    const usage = data.usage;
+                    const pricing = {
+                        inputStandard: 0.0000025, // $2.50 per 1M
+                        inputCached: 0.00000125,   // $1.25 per 1M
+                        output: 0.00001           // $10.00 per 1M
+                    };
+
+                    const promptTokensStandard = usage.prompt_tokens - usage.cached_tokens;
+                    const cost = (promptTokensStandard * pricing.inputStandard) +
+                        (usage.cached_tokens * pricing.inputCached) +
+                        (usage.completion_tokens * pricing.output);
+
+                    document.getElementById('tokenUsage').innerHTML = `
+                        Prompt: ${usage.prompt_tokens} (${usage.cached_tokens} cached)<br>
+                        Completion: ${usage.completion_tokens}
+                    `;
+                    document.getElementById('requestCost').innerText = `$${cost.toFixed(6)}`;
+                    document.getElementById('batchCost').innerText = `$${(cost * 100).toFixed(4)}`;
+                    costContainer.style.display = 'block';
+                }
 
                 if (data.leads && data.leads.length > 0) {
                     statusEl.innerText = `Found ${data.leads.length} lead(s).`;

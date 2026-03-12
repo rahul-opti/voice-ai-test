@@ -72,7 +72,16 @@ async def extract_leads(file: UploadFile = File(...)) -> dict[str, Any]:
             logger.error(f"Failed to parse JSON from AI: {content_str}")
             leads = []
 
-        return {"leads": leads}
+        usage = response.usage
+        return {
+            "leads": leads,
+            "usage": {
+                "prompt_tokens": usage.prompt_tokens,
+                "completion_tokens": usage.completion_tokens,
+                "total_tokens": usage.total_tokens,
+                "cached_tokens": getattr(usage.prompt_tokens_details, 'cached_tokens', 0) if hasattr(usage, 'prompt_tokens_details') else 0
+            }
+        }
     except Exception as e:
         logger.error(f"Error during lead extraction: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to process image.")
